@@ -27,3 +27,34 @@
 3034724|INFO|BaseNode/A@84:call|CSMA Data received, Data: [0]
 3039149|INFO|DataNode/B@92:call|Transmitting in CSMA...
 3040131|INFO|BaseNode/A@84:call|CSMA Data received, Data: [0]
+
+End To End Delay Calculation:
+
+Neighbour Broadcast: A->B: 2983982-2983000 = 982ms
+                     A->C: 2984131-2983000 = 1131ms
+                     A->D: 2984131-2983000 = 1131ms
+
+Neighbour Response:  B->A: 3012117-3011135 = 982ms
+                     C->A: 3006398-3005267 = 1131ms
+                     D->A: 3000076-2998945 = 1131ms
+
+TDMA Broadcast:      A->B: 3013982-3013000 = 982ms
+                     A->C: 3014131-3013000 = 1131ms
+                     A->D: 3014131-3013000 = 1131ms
+
+TDMA Response:       B->A: 3014964-3013982 = 982ms
+                     C->A: 3020262-3019131 = 1131ms
+                     D->A: 3025262-3024131 = 1131ms
+
+Package Delivery Ratio:
+
+Neighbour Broadcast: A->B: 52/52 = 1.0000
+                     A->C: 52/52 = 1.0000
+                     A->D: 52/52 = 1.0000
+
+Neighbour Response:  B,C,D->A: 125/(52+52+52) = 0.8013
+                     A->D: 51/52 = 0.9808
+
+TDMA Response:       B->A: 3014964-3013982 = 982ms
+                     C->A: 3020262-3019131 = 1131ms
+                     D->A: 3025262-3024131 = 1131ms
