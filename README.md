@@ -1,4 +1,4 @@
-# Network Simulation Readme
+# Network Simulation
 
 This readme provides an overview of the code and log files related to a network simulation.
 
@@ -6,15 +6,15 @@ This readme provides an overview of the code and log files related to a network 
 
 ### BaseNode Class
 
-The `BaseNode` class represents a node in a network simulation using the UNet framework. It includes functionalities for neighbor discovery, TDMA broadcasting, and CSMA broadcasting.
+The `BaseNode` class, defined in the provided code (`BaseNode.groovy`), represents a node in a network simulation using the UNet framework. It includes functionalities for neighbor discovery, TDMA broadcasting, and CSMA broadcasting.
 
 #### Functionality Highlights:
 
-- **Neighbor Discovery**: The node periodically broadcasts initialization datagrams to nearby nodes for neighbor discovery.
+- **Neighbor Discovery**: The `BaseNode` periodically broadcasts initialization datagrams to nearby nodes for neighbor discovery.
 
-- **TDMA Broadcasting**: After discovering neighbors, the node broadcasts TDMA time slots to coordinate communication.
+- **TDMA Broadcasting**: After discovering neighbors, the `BaseNode` broadcasts TDMA time slots to coordinate communication.
 
-- **CSMA Broadcasting**: Based on the number of neighbors, the node starts CSMA broadcasting to manage shared access to the medium.
+- **CSMA Broadcasting**: Based on the number of neighbors, the `BaseNode` starts CSMA broadcasting to manage shared access to the medium.
 
 #### Parameters:
 
@@ -45,34 +45,23 @@ The class provides a method to retrieve a list of all defined parameters.
 
 ### DataNode Class
 
-The `DataNode` class represents a data node in a network simulation using the UNet framework. It includes functionalities for processing messages, handling initialization requests, and managing TDMA and CSMA transmissions.
+Similarly, the `DataNode` class, defined in the provided code (`DataNode.groovy`), represents a data node in the network simulation. It includes functionalities for processing messages, handling initialization requests, and managing TDMA and CSMA transmissions.
 
 #### Functionality Highlights:
 
-- **Initialization Handling**: The node processes initialization requests from neighboring nodes, acknowledging requests and exchanging protocol parameters.
+- **Initialization Handling**: The `DataNode` processes initialization requests from neighboring nodes, acknowledging requests and exchanging protocol parameters.
 
-- **TDMA Transmission**: Upon receiving TDMA initialization, the node starts transmitting data in assigned TDMA slots.
+- **TDMA Transmission**: Upon receiving TDMA initialization, the `DataNode` starts transmitting data in assigned TDMA slots.
 
-- **CSMA Transmission**: The node initiates CSMA transmission after completing TDMA transmission, managing collisions and backoff periods.
+- **CSMA Transmission**: The `DataNode` initiates CSMA transmission after completing TDMA transmission, managing collisions and backoff periods.
 
 #### Parameters:
 
-The `DataNode` class defines the following parameters:
-
-- `tdmaSlot`: TDMA slot information.
-- `csmaSlotLength`: Length of CSMA time slots.
-- `tdmaSlotLength`: Length of TDMA time slots.
-- `delayLength`: Delay length between actions.
+The `DataNode` class defines parameters such as `tdmaSlot`, `csmaSlotLength`, `tdmaSlotLength`, and `delayLength`.
 
 #### Communication Protocols:
 
-The class defines the following communication protocols:
-
-- `INIT`: Initialization protocol.
-- `ACK`: Acknowledgment protocol.
-- `TDMA_INIT`: TDMA initialization protocol.
-- `TDMA`: TDMA data transmission protocol.
-- `CSMA`: CSMA data transmission protocol.
+Similar to `BaseNode`, the `DataNode` class defines communication protocols such as `INIT`, `ACK`, `TDMA_INIT`, `TDMA`, and `CSMA`.
 
 #### Message Processing:
 
@@ -84,9 +73,7 @@ The class provides a method to retrieve a list of all defined parameters.
 
 ## Log File Overview
 
-The provided log file captures interactions between different nodes in a network simulation. It includes details such as timestamps, node interactions, network operations, node acknowledgments, and more.
+The provided log file (`simulation.log`) captures interactions between different nodes in the network simulation. It includes details such as timestamps, node interactions, network operations, node acknowledgments, and more.
 
-[Click here](path/to/logfile.log) to view the log file.
+[Click here](path/to/simulation.log) to view the log file.
 
-
-![Description](https://github.com/BhavyaMehta2/UNET/assets/77964425/b7a4bb56-5b0e-4a3f-87d8-3f6faef03251)
