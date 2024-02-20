@@ -65,7 +65,7 @@ The class includes a method for processing incoming messages, handling initializ
 
 The provided log file (`simulation.log`) captures interactions between different nodes in the network simulation. It includes details such as timestamps, node interactions, network operations, node acknowledgments, and more.
 
-[Click here](path/to/simulation.log) to view the log file.
+[Click here](https://github.com/BhavyaMehta2/UNET/blob/main/one_cycle.log) to view the log file.
 
 Start
 
