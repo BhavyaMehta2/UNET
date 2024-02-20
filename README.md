@@ -6,15 +6,13 @@ This readme provides an overview of the code and log files related to a network 
 
 ### BaseNode Class
 
-The `BaseNode` class, defined in the provided code (`BaseNode.groovy`), represents a node in a network simulation using the UNet framework. It includes functionalities for neighbor discovery, TDMA broadcasting, and CSMA broadcasting.
+The `BaseNode` class, defined in the provided code (`BaseNode.groovy`), represents a node in a network simulation using the UNet framework. It includes functionalities for neighbor discovery, TDMA broadcasting.
 
 #### Functionality Highlights:
 
 - **Neighbor Discovery**: The `BaseNode` periodically broadcasts initialization datagrams to nearby nodes for neighbor discovery.
 
 - **TDMA Broadcasting**: After discovering neighbors, the `BaseNode` broadcasts TDMA time slots to coordinate communication.
-
-- **CSMA Broadcasting**: Based on the number of neighbors, the `BaseNode` starts CSMA broadcasting to manage shared access to the medium.
 
 #### Parameters:
 
@@ -39,10 +37,6 @@ The class defines the following communication protocols:
 
 The class includes a method for processing incoming messages, handling acknowledgments, TDMA data, and CSMA data.
 
-#### Parameter Access:
-
-The class provides a method to retrieve a list of all defined parameters.
-
 ### DataNode Class
 
 Similarly, the `DataNode` class, defined in the provided code (`DataNode.groovy`), represents a data node in the network simulation. It includes functionalities for processing messages, handling initialization requests, and managing TDMA and CSMA transmissions.
@@ -66,10 +60,6 @@ Similar to `BaseNode`, the `DataNode` class defines communication protocols such
 #### Message Processing:
 
 The class includes a method for processing incoming messages, handling initialization requests, TDMA initialization, and CSMA transmission.
-
-#### Parameter Access:
-
-The class provides a method to retrieve a list of all defined parameters.
 
 ## Log File Overview
 
