@@ -70,34 +70,84 @@ The provided log file (`simulation.log`) captures interactions between different
 Start
 
 **BaseNode startup()**
-- Subscribe for DATAGRAM service
-- Initialize phy agent for physical layer communication
-- Setup WakerBehavior for periodic neighborBroadcast()
-- neighbourBroadcast is followed by tdmaBroadcaast() and then by csmaBroadcast()
+- Initiates neighbor discovery process.
+- Sends out a broadcast with data packets representing:
+  - delayLength
+  - tdmaSlotLength
+  - csmaSlotLength
+- Waits for responses from other nodes.
+- Processes responses from data nodes:
+  - If channel is busy, data nodes initiate a random backoff before responding.
+  - Data nodes send back their addresses.
+- Once all nodes are acknowledged, the base node orders their addresses in ascending order.
+- Broadcasts the ordered list of addresses to assign TDMA time slots.
+- Waits for responses from data nodes.
+- Initiates transmission of location data in their assigned TDMA time slots.
+- Once transmission is over, initiates data transmission using CSMA if there is data to be sent back.
+- After TDMA slot broadcast is sent out, the base node waits for incoming messages until it is time again for neighbor broadcast.
 
 **DataNode startup()**
-- Initialize rnd for randomization
-- Subscribe for DATAGRAM service
-- Initialize phy and node agents
-- Process messages:
-  - If DatagramNtf from another node:
-    - Set channelBusy flag
-    - Setup WakerBehavior to reset channelBusy after 1500 ms
-  - If DatagramNtf with INIT protocol:
-    - Respond with acknowledgment (ACK) if channel is not busy
-    - If channel is busy, setup WakerBehavior for backoff and CSMA transmission
-  - If DatagramNtf with TDMA_INIT protocol:
-    - Process TDMA initialization and setup transmission in assigned TDMA slots
-    - Setup WakerBehavior for CSMA transmission after TDMA transmission
-  - If DatagramNtf with other protocols:
+- Receives initialization broadcast from the base node.
+- Decodes initialization data packets to extract parameters such as:
+  - delayLength
+  - tdmaSlotLength
+  - csmaSlotLength
+- Responds to the base node with its address.
+- If channel is busy, initiates a random backoff before responding.
+- Waits for acknowledgment from the base node.
+- Upon acknowledgment, awaits further instructions.
+- Receives the ordered list of addresses from the base node to assign TDMA time slots.
+- Waits for TDMA slot transmission from the base node.
+- Initiates transmission of location data in its assigned TDMA time slot.
+- Waits for data transmission instructions from the base node.
+- If data needs to be sent back, initiates transmission using CSMA.
+- Waits for further instructions after completing transmissions.
+
+End
+
+Start
+
+**BaseNode startup()**
+- Subscribe for DATAGRAM service to listen for incoming messages.
+- Initialize phy agent for physical layer communication.
+- If phy is null, attempt to initialize phy again.
+- Subscribe to the topic for phy agent to receive messages from the physical layer.
+- Add WakerBehavior to trigger periodic neighborBroadcast() for neighbor discovery.
+- tdmaBroadcast() is triggered after the nodes are acknowledged.
+
+**DataNode startup()**
+- Initialize a random number generator (rnd) for randomization.
+- Subscribe for DATAGRAM service to listen for incoming messages.
+- Initialize phy agent for physical layer communication.
+- Initialize node agent to obtain node information.
+- Subscribe to the topic for phy agent to receive messages from the physical layer.
+- Process incoming messages:
+  - If DatagramNtf is received from another node:
+    - Set channelBusy flag to indicate that the communication channel is busy.
+    - Schedule WakerBehavior to reset the channelBusy flag after 1500 milliseconds.
+  - If DatagramNtf with INIT protocol is received:
+    - Decode initialization data and extract parameters such as tdmaSlotLength, csmaSlotLength, and delayLength.
+    - Respond with an acknowledgment (ACK) if the channel is not busy.
+    - If the channel is busy, schedule a WakerBehavior for backoff and CSMA transmission.
+  - If DatagramNtf with TDMA_INIT protocol is received:
+    - Decode TDMA initialization data and process it.
+    - Setup transmission in assigned TDMA slots.
+    - Schedule a WakerBehavior for CSMA transmission after completing TDMA transmission.
+  - If DatagramNtf with other protocols is received:
+    - Process other protocols (not detailed in the flowchart).
 
 **BaseNode processMessage()**
 - Process incoming messages:
-  - If DatagramNtf with ACK protocol:
-    - Add sender to neighbors list and increment counters
-  - If DatagramNtf with TDMA protocol:
-    - Process TDMA data and increment counters
-  - If DatagramNtf with CSMA protocol:
-    - Process CSMA data and increment counters
+  - If DatagramNtf with ACK protocol is received:
+    - Decode acknowledgment data and update the neighbors list.
+    - Increment the counter for received acknowledgments (NBRx).
+  - If DatagramNtf with TDMA protocol is received:
+    - Decode TDMA data and update counters.
+    - Increment the counter for TDMA receptions (TDMARx).
+    - Process TDMA data.
+  - If DatagramNtf with CSMA protocol is received:
+    - Process CSMA data.
+    - Increment the counter for CSMA receptions (CSMARx).
+- Provide access methods for retrieving parameter lists (not detailed in the flowchart).
 
 End
