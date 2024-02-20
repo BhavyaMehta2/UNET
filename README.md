@@ -67,3 +67,50 @@ The provided log file (`simulation.log`) captures interactions between different
 
 [Click here](path/to/simulation.log) to view the log file.
 
+Start
+
+BaseNode startup()
+|
+|__ Subscribe for DATAGRAM service
+|__ Initialize phy agent for physical layer communication
+|__ Setup WakerBehavior for periodic neighborBroadcast()
+
+DataNode startup()
+|
+|__ Initialize rnd for randomization
+|__ Subscribe for DATAGRAM service
+|__ Initialize phy and node agents
+|
+|__ Process messages
+    |
+    |__ If DatagramNtf from another node
+    |   |__ Set channelBusy flag
+    |   |__ Setup WakerBehavior to reset channelBusy after 1500 ms
+    |
+    |__ If DatagramNtf with INIT protocol
+    |   |__ Respond with acknowledgment (ACK) if channel is not busy
+    |   |__ If channel is busy, setup WakerBehavior for backoff and CSMA transmission
+    |
+    |__ If DatagramNtf with TDMA_INIT protocol
+    |   |__ Process TDMA initialization and setup transmission in assigned TDMA slots
+    |   |__ Setup WakerBehavior for CSMA transmission after TDMA transmission
+    |
+    |__ If DatagramNtf with other protocols
+        |__ Process other protocols (not detailed in flowchart)
+
+BaseNode processMessage()
+|
+|__ Process incoming messages
+|   |
+|   |__ If DatagramNtf with ACK protocol
+|   |   |__ Add sender to neighbors list and increment counters
+|   |
+|   |__ If DatagramNtf with TDMA protocol
+|   |   |__ Process TDMA data and increment counters
+|   |
+|   |__ If DatagramNtf with CSMA protocol
+|       |__ Process CSMA data and increment counters
+|
+|__ Parameter access methods (not detailed in flowchart)
+
+End
