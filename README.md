@@ -76,11 +76,6 @@ graph TD;
     DataNode --> Initialize_rnd;
     DataNode --> Subscribe;
     DataNode --> Initialize_agents;
-    Subscribe[Subscribe for DATAGRAM service];
-    Initialize_phy[Initialize phy agent];
-    Setup_WakerBehavior[Setup WakerBehavior for periodic neighborBroadcast()];
-    Initialize_rnd[Initialize rnd for randomization];
-    Initialize_agents[Initialize phy and node agents];
     BaseNode --> Process_messages;
     Process_messages[Process messages];
     Process_messages --> |DatagramNtf from another node| ChannelBusy;
@@ -97,6 +92,5 @@ graph TD;
     Setup_CSMA_transmission --> |After TDMA transmission|;
     Process_messages --> |DatagramNtf with other protocols| Process_other_protocols;
     Process_other_protocols --> |Not detailed| End;
-    Send_ACK[Send acknowledgment (ACK)];
     End((End));
 
