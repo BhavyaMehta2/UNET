@@ -73,6 +73,7 @@ Start
 - Subscribe for DATAGRAM service
 - Initialize phy agent for physical layer communication
 - Setup WakerBehavior for periodic neighborBroadcast()
+- neighbourBroadcast is followed by tdmaBroadcaast() and then by csmaBroadcast()
 
 **DataNode startup()**
 - Initialize rnd for randomization
@@ -89,7 +90,6 @@ Start
     - Process TDMA initialization and setup transmission in assigned TDMA slots
     - Setup WakerBehavior for CSMA transmission after TDMA transmission
   - If DatagramNtf with other protocols:
-    - Process other protocols (not detailed in flowchart)
 
 **BaseNode processMessage()**
 - Process incoming messages:
@@ -99,6 +99,5 @@ Start
     - Process TDMA data and increment counters
   - If DatagramNtf with CSMA protocol:
     - Process CSMA data and increment counters
-- Parameter access methods (not detailed in flowchart)
 
 End
