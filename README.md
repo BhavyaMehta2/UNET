@@ -67,50 +67,36 @@ The provided log file (`simulation.log`) captures interactions between different
 
 [Click here](path/to/simulation.log) to view the log file.
 
-Start
+```mermaid
+graph TD;
+    Start((Start)) --> BaseNode;
+    BaseNode --> Subscribe;
+    BaseNode --> Initialize_phy;
+    BaseNode --> Setup_WakerBehavior;
+    DataNode --> Initialize_rnd;
+    DataNode --> Subscribe;
+    DataNode --> Initialize_agents;
+    Subscribe[Subscribe for DATAGRAM service];
+    Initialize_phy[Initialize phy agent];
+    Setup_WakerBehavior[Setup WakerBehavior for periodic neighborBroadcast()];
+    Initialize_rnd[Initialize rnd for randomization];
+    Initialize_agents[Initialize phy and node agents];
+    BaseNode --> Process_messages;
+    Process_messages[Process messages];
+    Process_messages --> |DatagramNtf from another node| ChannelBusy;
+    ChannelBusy --> Set_channelBusy_flag;
+    ChannelBusy --> Setup_WakerBehavior_reset;
+    Set_channelBusy_flag --> |1500ms| Reset_channelBusy_flag;
+    Reset_channelBusy_flag --> |if DatagramNtf with INIT protocol| Respond_ACK;
+    Respond_ACK --> |If channel is not busy| Send_ACK;
+    Respond_ACK --> |If channel is busy| Setup_backoff_and_CSMA;
+    Setup_backoff_and_CSMA --> |Backoff and CSMA transmission|;
+    Process_messages --> |DatagramNtf with TDMA_INIT protocol| Process_TDMA_init;
+    Process_TDMA_init --> Process_TDMA_transmission;
+    Process_TDMA_transmission --> Setup_CSMA_transmission;
+    Setup_CSMA_transmission --> |After TDMA transmission|;
+    Process_messages --> |DatagramNtf with other protocols| Process_other_protocols;
+    Process_other_protocols --> |Not detailed| End;
+    Send_ACK[Send acknowledgment (ACK)];
+    End((End));
 
-BaseNode startup()
-|
-|__ Subscribe for DATAGRAM service
-|__ Initialize phy agent for physical layer communication
-|__ Setup WakerBehavior for periodic neighborBroadcast()
-
-DataNode startup()
-|
-|__ Initialize rnd for randomization
-|__ Subscribe for DATAGRAM service
-|__ Initialize phy and node agents
-|
-|__ Process messages
-    |
-    |__ If DatagramNtf from another node
-    |   |__ Set channelBusy flag
-    |   |__ Setup WakerBehavior to reset channelBusy after 1500 ms
-    |
-    |__ If DatagramNtf with INIT protocol
-    |   |__ Respond with acknowledgment (ACK) if channel is not busy
-    |   |__ If channel is busy, setup WakerBehavior for backoff and CSMA transmission
-    |
-    |__ If DatagramNtf with TDMA_INIT protocol
-    |   |__ Process TDMA initialization and setup transmission in assigned TDMA slots
-    |   |__ Setup WakerBehavior for CSMA transmission after TDMA transmission
-    |
-    |__ If DatagramNtf with other protocols
-        |__ Process other protocols (not detailed in flowchart)
-
-BaseNode processMessage()
-|
-|__ Process incoming messages
-|   |
-|   |__ If DatagramNtf with ACK protocol
-|   |   |__ Add sender to neighbors list and increment counters
-|   |
-|   |__ If DatagramNtf with TDMA protocol
-|   |   |__ Process TDMA data and increment counters
-|   |
-|   |__ If DatagramNtf with CSMA protocol
-|       |__ Process CSMA data and increment counters
-|
-|__ Parameter access methods (not detailed in flowchart)
-
-End
