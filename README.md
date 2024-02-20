@@ -67,7 +67,7 @@ The provided log file (`simulation.log`) captures interactions between different
 
 [Click here](https://github.com/BhavyaMehta2/UNET/blob/main/one_cycle.log) to view the log file.
 
-Start
+#Pseudo-Algorithm
 
 **BaseNode startup()**
 - Initiates neighbor discovery process.
@@ -103,9 +103,7 @@ Start
 - If data needs to be sent back, initiates transmission using CSMA.
 - Waits for further instructions after completing transmissions.
 
-End
-
-Start
+##Function Description
 
 **BaseNode startup()**
 - Subscribe for DATAGRAM service to listen for incoming messages.
@@ -149,5 +147,3 @@ Start
     - Process CSMA data.
     - Increment the counter for CSMA receptions (CSMARx).
 - Provide access methods for retrieving parameter lists (not detailed in the flowchart).
-
-End
