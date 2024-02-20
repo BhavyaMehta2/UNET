@@ -54,7 +54,3 @@ Neighbour Broadcast: A->B: 52/52 = 1.0000
 
 Neighbour Response:  B,C,D->A: 125/(52+52+52) = 0.8013
                      A->D: 51/52 = 0.9808
-
-TDMA Response:       B->A: 3014964-3013982 = 982ms
-                     C->A: 3020262-3019131 = 1131ms
-                     D->A: 3025262-3024131 = 1131ms
