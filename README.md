@@ -134,7 +134,7 @@ The entire log file is also provided as (`log.txt`).
     - Setup transmission in assigned TDMA slots.
     - Schedule a WakerBehavior for CSMA transmission after completing TDMA transmission.
   - If DatagramNtf with other protocols is received:
-    - Process other protocols (not detailed in the flowchart).
+    - Ignore.
 
 **BaseNode processMessage()**
 - Process incoming messages:
@@ -148,4 +148,3 @@ The entire log file is also provided as (`log.txt`).
   - If DatagramNtf with CSMA protocol is received:
     - Process CSMA data.
     - Increment the counter for CSMA receptions (CSMARx).
-- Provide access methods for retrieving parameter lists (not detailed in the flowchart).
