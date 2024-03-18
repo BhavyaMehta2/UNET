@@ -7,8 +7,8 @@ import org.arl.fjage.OneShotBehavior
 
 class BaseNode extends UnetAgent {
   
-  final String title = 'Echo Daemon'        
-  final String description = 'Echoes any USER datagrams back as DATA' 
+  final String title = 'Base Node'        
+  final String description = 'Serves as the base for a network of nodes' 
 
   enum BaseParams implements Parameter { // Enum for BaseNode parameters
     tdmaSlotLength, // Length of TDMA slot
@@ -41,9 +41,9 @@ class BaseNode extends UnetAgent {
     int16('z') // z coordinate
   }
 
-  int delayLength = 30000 // Default delay length             
-  int tdmaSlotLength = 5000 // Default TDMA slot length
-  int csmaSlotLength = 15000 // Default CSMA slot length
+  int delayLength = 20000 // Default delay length             
+  int tdmaSlotLength = 2500 // Default TDMA slot length
+  int csmaSlotLength = 10000 // Default CSMA slot length
   int buffer = 0 // Buffer size
   TreeSet neighbours = [] // Set of neighbours
   AgentID phy // Agent ID for the physical layer
@@ -65,7 +65,7 @@ class BaseNode extends UnetAgent {
 
     subscribe topic(phy) // Subscribe to physical agent's topic
     
-    add new WakerBehavior(3000, { // Schedule neighbourBroadcast every 3000ms
+    add new WakerBehavior(3000, { // Schedule neighbourBroadcast to start after 3000ms
       neighbourBroadcast()
     })
   }
@@ -77,6 +77,7 @@ class BaseNode extends UnetAgent {
       neighbours = [] // Clear neighbours set
       def bytes = init.encode(tdmaSlotLength: tdmaSlotLength, csmaSlotLength:csmaSlotLength, delayLength:delayLength) // Encode initialization data
       add new OneShotBehavior({ // Send initialization datagram
+        phy << new ClearReq()
         phy << new DatagramReq(
           protocol: Protocols.INIT, // Set protocol to INIT
           data: bytes // Set data to encoded initialization data
@@ -92,6 +93,7 @@ class BaseNode extends UnetAgent {
     add new WakerBehavior(delayLength, { // Schedule TDMA broadcast after delayLength
       log.info "Broadcasting TDMA time slots..." // Log TDMA broadcast start
       add new OneShotBehavior({ // Send TDMA initialization datagram
+          phy << new ClearReq()
           phy << new DatagramReq(
             protocol: Protocols.TDMA_INIT, // Set protocol to TDMA_INIT
             data: neighbours // Set data to neighbours set
@@ -99,11 +101,11 @@ class BaseNode extends UnetAgent {
         })
       TDMATx++ // Increment TDMA transmission counter
       
-      csmaBroadcast() // Start CSMA broadcast
+      csmaMode() // Start CSMA broadcast
     })
   }
 
-  void csmaBroadcast()  { // Method to broadcast CSMA information
+  void csmaMode()  { // Method to broadcast CSMA information
     add new WakerBehavior(neighbours.size()*tdmaSlotLength, // Schedule neighbour broadcast duration
     {   
       log.info "Starting CSMA..." // Log start of CSMA
