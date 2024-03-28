@@ -8,6 +8,8 @@ import org.arl.unet.sim.channels.*
 import static org.arl.unet.Services.*
 import static org.arl.unet.phy.Physical.*
 
+for(int i = 1; i<=10; i++)
+{
 int countNodes = 4
 int depthBase = 1000
 int depthData = 1100
@@ -32,12 +34,12 @@ modem.txDelay = 0
 ///////////////////////////////////////////////////////////////////////////////
 // simulation details
 
-println '''
-Simulation
-=====================
+// println '''
+// Simulation
+// =====================
 
-TX Count\tRX Count\tOffered Load\tThroughput
---------\t--------\t------------\t----------'''
+// TX Count\tRX Count\tOffered Load\tThroughput
+// --------\t--------\t------------\t----------'''
 
 simulate T, {  
   nodes.each { myAddr ->
@@ -50,8 +52,8 @@ simulate T, {
         def rnd = AgentLocalRandom.current() 
         def phy = agentForService PHYSICAL
 
-        add new TickerBehavior(5000, {
-          def dataAt = rnd.nextInt(3000)
+        add new TickerBehavior(1500*(countNodes-1), {
+          def dataAt = rnd.nextInt(1500*(countNodes-1)-2000)
 
           add new WakerBehavior(dataAt, {
               if(phy.busy)
@@ -77,3 +79,4 @@ simulate T, {
 
 println sprintf('%6d\t\t%6d\t\t%7.3f\t\t%7.3f',
     [trace.txCount, trace.rxCount, trace.offeredLoad, trace.throughput])
+}

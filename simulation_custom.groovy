@@ -5,12 +5,14 @@ import org.arl.unet.phy.*
 import org.arl.unet.sim.*
 import org.arl.unet.sim.channels.*
 
+for(int i = 1; i<=10; i++)
+{
 int countNodes = 4
 int depthBase = 1000
 int depthData = 1100
 int radius = 1000
 def nodes = 1..countNodes                      // list with n nodes
-def T = 2.hours                       // simulation duration
+def T = 1.hours                       // simulation duration
 trace.warmup = 15.minutes             // collect statistics after a while
 
 def loc = new LocationGen()
@@ -29,12 +31,12 @@ modem.txDelay = 0
 ///////////////////////////////////////////////////////////////////////////////
 // simulation details
 
-println '''
-Simulation
-=====================
+// println '''
+// Simulation
+// =====================
 
-TX Count\tRX Count\tOffered Load\tThroughput
---------\t--------\t------------\t----------'''
+// TX Count\tRX Count\tOffered Load\tThroughput
+// --------\t--------\t------------\t----------'''
 
 setup1 = { c -> // Define setup1 closure for node configuration
   c.add 'echo', new BaseNodeCompat(countNodes)
@@ -57,3 +59,4 @@ simulate T, {
 
 println sprintf('%6d\t\t%6d\t\t%7.3f\t\t%7.3f',
     [trace.txCount, trace.rxCount, trace.offeredLoad, trace.throughput])
+}

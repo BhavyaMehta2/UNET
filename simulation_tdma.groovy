@@ -7,12 +7,14 @@ import org.arl.unet.sim.channels.*
 import static org.arl.unet.Services.*
 import static org.arl.unet.phy.Physical.*
 
+for(int i = 1; i<=10; i++)
+{
 int countNodes = 4
 int depthBase = 1000
 int depthData = 1100
 int radius = 1000
 def nodes = 1..countNodes                      // list with n nodes
-def T = 2.hours                       // simulation duration
+def T = 1.hours                       // simulation duration
 trace.warmup = 15.minutes             // collect statistics after a while
 
 def loc = new LocationGen()
@@ -31,12 +33,12 @@ modem.txDelay = 0
 ///////////////////////////////////////////////////////////////////////////////
 // simulation details
 
-println '''
-Simulation
-=====================
+// println '''
+// Simulation
+// =====================
 
-TX Count\tRX Count\tOffered Load\tThroughput
---------\t--------\t------------\t----------'''
+// TX Count\tRX Count\tOffered Load\tThroughput
+// --------\t--------\t------------\t----------'''
 
 simulate T, {  
     nodes.each { myAddr ->
@@ -47,7 +49,7 @@ simulate T, {
         if(myAddr!=1)
         {
           add new WakerBehavior(1500*(myAddr-1), {
-            add new TickerBehavior(1500*3, {
+            add new TickerBehavior(1500*(countNodes-1), {
               phy << new ClearReq()
               phy << new TxFrameReq(to: 1, type: Physical.DATA)
             })
@@ -59,3 +61,4 @@ simulate T, {
 
   println sprintf('%6d\t\t%6d\t\t%7.3f\t\t%7.3f',
     [trace.txCount, trace.rxCount, trace.offeredLoad, trace.throughput])
+}
